@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = new Sequelize('sqlite:./dbname.db')
 
 function getModel(dbname) {
-  const sequelize = new Sequelize(`sqlite:./${dbname}.db`)
+  const sequelize = new Sequelize(`sqlite:./${dbname}.db`,{logging: false})
   const Record = sequelize.define('record', {
     rank: Sequelize.STRING,
     address: Sequelize.STRING,

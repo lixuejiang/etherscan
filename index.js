@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const getModel = require('./common/db').getModel;
 
-(async () => {
+const fetchEthscanData = async () => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   let contractMap = {
@@ -25,5 +25,22 @@ const getModel = require('./common/db').getModel;
   });
   await Record.sync()
   await Record.bulkCreate(data)
+  console.log('fetchEthscanData success')
   await browser.close();
-})();
+}
+
+function processData(record) {
+  // 获取上一次的记录
+
+  // 判断数据是否相等，相等则返回false
+
+  // 看看排名是否有变化，有变化则发邮件
+
+  // 看看仓位差距有多大，大于5个点则发邮件，否则和半个小时前比较，然后和1个小时前比较
+
+  // 发送邮件
+}
+setInterval(() => {
+  console.log('fetchData')
+  fetchEthscanData()
+}, 1000)
