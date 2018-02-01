@@ -8,7 +8,7 @@ let transporter = nodemailer.createTransport({
     secure: true, // true for 465, false for other ports
     auth: {
         user: '642898959@qq.com', // generated ethereal user
-        pass: '111'  // generated ethereal password
+        pass: 'ydkxavsnywkibejf'  // generated ethereal password
     }
 });
 
@@ -21,15 +21,16 @@ let mailOptions = {
     html: '<b>你有1000个比特币到账，请<a href="http://www.baidu.com" target="_blank">点我</a>查收</b>' // html body
 };
 
+module.exports = transporter
 // send mail with defined transport object
-transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        return console.log(error);
-    }
-    console.log('Message sent: %s', info.messageId);
-    // Preview only available when sending through an Ethereal account
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+// transporter.sendMail(mailOptions, (error, info) => {
+//     if (error) {
+//         return console.log(error);
+//     }
+//     console.log('Message sent: %s', info.messageId);
+//     // Preview only available when sending through an Ethereal account
+//     console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-});
+//     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
+//     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+// });

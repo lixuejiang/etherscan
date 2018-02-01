@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize('sqlite:./dbname.db')
+const moment = require('moment');
 
 function getModel(dbname) {
   const sequelize = new Sequelize(`sqlite:./${dbname}.db`,{logging: false})
@@ -12,16 +13,28 @@ function getModel(dbname) {
   return Record;
 }
 
+async function test() {
+  let model = getModel('EOS')
+  const recodrs = await model.findAll({
+    where: {
+      address: '0x00000000000000000000000000000000000000b1'
+    },
+    order: [Sequelize.literal('recordDate DESC')]
+  })
+  console.log(moment(recodrs[0].recordDate).format('YYYY年MM月DD日 HH:mm:ss'))
+}
 
-// Record =  getModel('122')
-// let temp = {
-//   rank: '1',
-//   address: 'trs[i].children[1].innerText',
-//   quantity: 10,
-// }
-// Record.sync().then(() => {
-//   Record.create(temp)
-// });
+// test()
+
+Record =  getModel('AION')
+let temp = {
+  rank: '1',
+  address: 'trs[i].children[1].innerText',
+  quantity: 10,
+}
+Record.sync().then(() => {
+  // Record.create(temp)
+});
 
 module.exports = {
   getModel: getModel
