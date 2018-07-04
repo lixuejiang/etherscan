@@ -14,7 +14,7 @@ function getModel(dbname) {
 }
 
 async function test() {
-  let model = getModel('EOS')
+  let model = getModel('EOSRAM')
   const recodrs = await model.findAll({
     where: {
       address: '0x00000000000000000000000000000000000000b1'
@@ -26,7 +26,7 @@ async function test() {
 
 // test()
 
-Record =  getModel('AION')
+Record = getModel('EOSRAM')
 let temp = {
   rank: '1',
   address: 'trs[i].children[1].innerText',
