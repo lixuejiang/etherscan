@@ -132,7 +132,7 @@ async function processData(model, record) {
 
 async function fetchAllEthscanData() {
   let mailMsg = []
-  for (let i = 1; i < 21; i++) {
+  for (let i = 1; i < 11; i++) {
     let html = await fetchEthscanData(i)
     if (html.length) {
       html = '<span style="font-size: 25px, color: "red"">第' + i + '页:<span><br />' + html
