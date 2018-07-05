@@ -3,8 +3,9 @@ const getModel = require('./common/db').getModel;
 const transporter = require('./common/sendmail')
 const Sequelize = require('sequelize');
 const moment = require('moment');
+const request = require('request-promise')
 
-const fetchEthscanData = async (pageNum) => {
+const fetchPerData = async (pageNum) => {
   const browser = await puppeteer.launch();
   const page = await browser.newPage();
   const Record = getModel('EOSRAM')
@@ -49,7 +50,7 @@ const fetchEthscanData = async (pageNum) => {
   }
   await Record.sync()
   await Record.bulkCreate(finalData)
-  console.log('fetchEthscanData success')
+  console.log('fetch eos ram holder rank success')
   let html = ''
   await browser.close();
   if (mailMsg.length) {
@@ -87,7 +88,7 @@ async function processData(model, record) {
   let result = true;
   let mailMsg = []
   let i = 0;
-  let maxLength = 10;
+  let maxLength = 2;
   let length = 0;
   // 获取上一次的记录
   const recodrs = await model.findAll({
@@ -130,25 +131,33 @@ async function processData(model, record) {
   }
 }
 
-async function fetchAllEthscanData() {
+async function fetchAllData() {
   let mailMsg = []
-  for (let i = 1; i < 11; i++) {
-    let html = await fetchEthscanData(i)
+  let price = await getEOSRamPrice()
+  for (let i = 1; i < 3; i++) {
+    let html = await fetchPerData(i)
     if (html.length) {
       html = '<span style="font-size: 25px, color: "red"">第' + i + '页:<span><br />' + html
-    } else {
-      html = '<span style="font-size: 25px, color: "red"">第' + i + ':页<span>无持仓变化<br />'
     }
     mailMsg.push(html)
   }
   if (mailMsg.length) {
+    mailMsg.unshift('<span style="font-size: 25px, color: "red"">当前价格：' + price + 'EOS/kb<span><br />')
     sendMail(mailMsg.join('<br />======================我是分割线=================<br />'))
   }
 }
+async function getEOSRamPrice(params) {
+  let price = 0.00000
+  let data = await request('https://tbeospre.mytokenpocket.vip/v1/ram_price')
+  data = JSON.parse(data)
+  if (data.result === 0) {
+    price = parseFloat(1 * 1024 / data.data).toFixed(5)
+  }
+  console.log('price is', price)
+  return price
+}
 
-fetchAllEthscanData()
+fetchAllData()
 setInterval(() => {
-  fetchAllEthscanData()
+  fetchAllData()
 }, 10*60*1000)
-
-// fetchEthscanData(1)
